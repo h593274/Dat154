@@ -1,0 +1,3 @@
+﻿  Oblig1.cpp
+C:\Users\Idris\source\repos\Oblig1\Oblig1\Oblig1.cpp(164,20): error C2374: 'hbrushLightGray': redefinition; multiple initialization
+C:\Users\Idris\source\repos\Oblig1\Oblig1\Oblig1.cpp(159,20): message : see declaration of 'hbrushLightGray'
