@@ -125,6 +125,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 {
     static BOOL isMouseButtonDown;
+    static POINT positionGreen{ 25,25 };
+    static POINT positionYellow{ 25,25 };
+    static POINT positionRed{ 25,25 };
+    static POINT position{ 200,200 };
+    static POINT position2{ 500,0 };
+    static int teller{ 1 };
+
     switch (message)
     {
     case WM_COMMAND:
@@ -148,8 +155,48 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_LBUTTONDOWN:
     {
         isMouseButtonDown = true;
-    
+
     }
+      
+    case WM_LBUTTONUP:{
+           isMouseButtonDown = false;
+    }
+
+    case WM_CREATE: SetTimer(hWnd,0,200,0);
+        break;
+    case WM_TIMER:
+               RECT rect;
+            GetClientRect(hWnd, &rect);
+    
+
+        while (teller == 1) {
+            position.x += 10;
+        }
+        while(teller == 3) {
+            position2.y += 10;
+        }
+
+        while(teller == 2) {
+            position.x += 10;
+            position2.y += 10;
+
+        }
+        if (isMouseButtonDown == true) {
+            teller++;
+            Sleep(100);
+        }
+        if(isMouseButtonDown == false) {
+            teller++;
+            Sleep(100);
+        }
+
+        if (teller == 4) {
+            teller = 1;
+        }
+
+        InvalidateRect(hWnd, 0, true);
+        break;
+
         
     case WM_PAINT:
         {
@@ -158,29 +205,107 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             HBRUSH hbrushBackground = CreateSolidBrush(RGB(90, 90, 90));
             HGDIOBJ hOriginal = SelectObject(hdc, hbrushBackground);
-            Rectangle(hdc,200, 100, 200, 200);
+            Rectangle(hdc,10, 15, 85, 150);
+
+            HBRUSH hbrushBackground2 = CreateSolidBrush(RGB(90, 90, 90));
+            SelectObject(hdc, hbrushBackground2);
+            Rectangle(hdc, 80, 15, 150, 150);
            
-            HBRUSH hbrush = CreateSolidBrush(RGB(255,0,0));
-            SelectObject(hdc, hbrush);
+
            
-            Ellipse(hdc, 75, 75, 100, 100);
+           
+            if (teller <= 1) {
 
-            HBRUSH hbrushLightGray = CreateSolidBrush(RGB(40, 40, 40));
-            SelectObject(hdc, hbrushLightGray);
-                
-            Ellipse(hdc, 50, 50, 100, 100);
+                HBRUSH hbrushTrafficklight = CreateSolidBrush(RGB(255, 0, 0));
+                SelectObject(hdc, hbrushTrafficklight);
+                Ellipse(hdc, 30, 25, 60, 60);
 
-            HBRUSH hbrushLightGray = CreateSolidBrush(RGB(40, 40, 40));
-            SelectObject(hdc, hbrushLightGray);
 
-            Ellipse(hdc, 25, 25, 100, 100);
+                HBRUSH hbrushTrafficklight2 = CreateSolidBrush(RGB(0, 255, 0));
+                SelectObject(hdc, hbrushTrafficklight2);
+
+                Ellipse(hdc, 130, 25, 100, 60);
+
+
+                DeleteObject(hbrushTrafficklight);
+                DeleteObject(hbrushTrafficklight2);
+
+            }
+            if (teller == 2) {
+
+                HBRUSH hbrushTrafficklight = CreateSolidBrush(RGB(255, 255, 0));
+                SelectObject(hdc, hbrushTrafficklight);
+                Ellipse(hdc, 30, 40, 60, 70);
+
+
+                HBRUSH hbrushTrafficklight2 = CreateSolidBrush(RGB(255, 255, 0));
+                SelectObject(hdc, hbrushTrafficklight2);
+
+                Ellipse(hdc, 130, 40, 100, 70);
+
+                DeleteObject(hbrushTrafficklight);
+                DeleteObject(hbrushTrafficklight2);
+
+            }
+            if (teller == 3) {
+
+                HBRUSH hbrushTrafficklight = CreateSolidBrush(RGB(0, 255, 0));
+                SelectObject(hdc, hbrushTrafficklight);
+                Ellipse(hdc, 30, 60, 60, 80);
+
+
+                HBRUSH hbrushTrafficklight2 = CreateSolidBrush(RGB(255, 0, 0));
+                SelectObject(hdc, hbrushTrafficklight2);
+
+                Ellipse(hdc, 130, 60, 100, 80);
+
+                DeleteObject(hbrushTrafficklight);
+                DeleteObject(hbrushTrafficklight2);
+
+            }
+
+
+           
+
+          
+
+            HBRUSH hbrushroad1 = CreateSolidBrush(RGB(90, 90, 90));
+            SelectObject(hdc, hbrushroad1);
+            Rectangle(hdc, 600, 0, 550, 450);
+
+            HBRUSH hbrushroad2 = CreateSolidBrush(RGB(90, 90, 90));
+            SelectObject(hdc, hbrushroad2);
+            Rectangle(hdc, 200, 195, 950, 140);
+
+           
+
+
+            if (isMouseButtonDown == false) {
+                HBRUSH hbrushBil = CreateSolidBrush(RGB(0, 0, 0));
+                HGDIOBJ hOriginalBil = SelectObject(hdc, hbrushBil);
+
+                Rectangle(hdc, position.x, 190, position.x - 10, 160);
+
+                DeleteObject(hbrushBil);
+
+
+                HBRUSH hbrushBil2 = CreateSolidBrush(RGB(0, 0, 0));
+                HGDIOBJ hBil2 = SelectObject(hdc, hbrushBil2);
+
+                Rectangle(hdc, 550, position2.y -10, 600, position2.y);
+
+                DeleteObject(hbrushBil2);
+                Sleep(100);
+            }
+        
+
+            
 
 
             SelectObject(hdc,hOriginal);
             DeleteObject(hbrushBackground);
-            DeleteObject(hbrush);
-            DeleteObject(hbrushLightGray);
-            DeleteObject(hbrushLightGray);
+            DeleteObject(hbrushBackground2);
+          
 
 
             EndPaint(hWnd, &ps);
